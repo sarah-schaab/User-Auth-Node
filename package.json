@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/sarah-schaab/User-Auth-Node/issues"
   },
-  "homepage": "https://github.com/sarah-schaab/User-Auth-Node#readme"
+  "homepage": "https://github.com/sarah-schaab/User-Auth-Node#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
 }
