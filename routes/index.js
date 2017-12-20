@@ -13,7 +13,18 @@ router.get('/about', function(req, res, next) {
 
 // get /contact
 router.get('/contact', function(req, res, next) {
-  return res.render('contact', { title: 'Contact' })
-})
+  return res.render('contact', { title: 'Contact' });
+});
+
+// get /register
+router.get('/register', function(req, res, next) {
+  return res.send('register today');
+});
+
+// post/register
+router.post('/register', function(req, res, next) {
+  return res.render('register', { title: 'Register'});
+});
+
 
 module.exports = router;
