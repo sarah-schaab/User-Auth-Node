@@ -26,5 +26,14 @@ router.post('/register', function(req, res, next) {
   return res.render('register', { title: 'Register'});
 });
 
+// get /login
+router.get('/login', function(req, res, next) {
+  return res.render('login', { title: 'Login' });
+});
+
+// post /Login
+router.post('/login', function(req, res, next) {
+  return res.render('login', { title: 'Login' });
+});
 
 module.exports = router;
