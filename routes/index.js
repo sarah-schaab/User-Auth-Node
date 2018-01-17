@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const User = require('../models/user');
 
 // get /
 router.get('/', function(req, res, next) {
@@ -23,7 +24,38 @@ router.get('/register', function(req, res, next) {
 
 // post/register
 router.post('/register', function(req, res, next) {
-  return res.render('register', { title: 'Register'});
+  if (req.body.email &&
+    req.body.name &&
+    req.body.password &&
+    req.body.confirmPassword) {
+
+      // handle matching passwords
+      if (req.body.password !== req.body.confirmPassword) {
+        var err = new Error('Passwords do not match.');
+        err.status = 400;
+        return next(err);
+      }
+      // create object with form input
+      const userData = {
+        email: req.body.email,
+        name: req.body.name,
+        password: req.body.password
+      };
+      // use schema's 'create' method to insert document into mongodb
+      User.create(userData, function (error, user) {
+        if (error) {
+          return next(error);
+        } else {
+          return res.redirect('/profile');
+        }
+      });
+
+      // handle fields left blank
+    } else {
+      let err = new Error('All fields required.');
+      err.status = 400;
+      return next(err);
+    }
 });
 
 // get /login
