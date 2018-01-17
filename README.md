@@ -1,4 +1,4 @@
-# User-Auth-Node
+# SkateSpot
 User authentication using Node.js, Express, and MongoDB
 
 
