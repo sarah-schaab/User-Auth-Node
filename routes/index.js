@@ -46,6 +46,7 @@ router.post('/register', function(req, res, next) {
         if (error) {
           return next(error);
         } else {
+          req.session.userId = user._id;
           return res.redirect('/profile');
         }
       });
@@ -65,7 +66,39 @@ router.get('/login', function(req, res, next) {
 
 // post /Login
 router.post('/login', function(req, res, next) {
-  return res.render('login', { title: 'Login' });
+  if (req.body.email && req.body.password) {
+    User.authenticate(req.body.email, req.body.password, function(error, user) {
+      if (error || !user) {
+        const err = new Error('Wrong email or password');
+        err.status = 401;
+        return next(err);
+      } else {
+        req.session.userId = user._id;
+        return res.redirect('/profile');
+      }
+    });
+  } else {
+    const err = new Error('Email & Password are required.');
+    err.status = 401;
+    return next(err);
+  }
+});
+
+// get /profile
+router.get('/profile', function(req, res, next) {
+  if (! req.session.userId) {
+    const err = new Error("You need to login to view this page");
+    err.status = 403;
+    return next(err);
+  }
+  User.findById(req.session.userId)
+      .exec(function(error, user) {
+        if (error) {
+          return next(error);
+        } else {
+          return res.render('profile', {title: 'Profile', name: user.name});
+        }
+      });
 });
 
 module.exports = router;
