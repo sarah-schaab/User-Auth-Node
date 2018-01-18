@@ -11,6 +11,10 @@ app.use(session({
   saveUninitialized: false
 }));
 
+app.use(function(req, res, next) {
+  res.locals.currentUser = req.session.userId;
+  next();
+});
 
 // mongodb connection
 mongoose.connect("mongodb://localhost:27017/skatespot");
